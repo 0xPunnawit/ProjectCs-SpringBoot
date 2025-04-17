@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Registration Successful',
+        text: 'Your account has been created successfully!',
+        timer: 3000, // ตั้งเวลา 3 วินาที
+        showConfirmButton: true, // แสดงปุ่ม Confirm
+        confirmButtonText: 'Go to Login',
+        timerProgressBar: true // แสดงแถบสถานะเวลา
+    }).then((result) => {
+        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+            // พาไปหน้า login เมื่อกดปุ่มหรือหมดเวลา
+            window.location.href = "/login";
+        }
+    });
+
+    // ตัวสำรองในกรณีที่มีปัญหา
+    setTimeout(() => {
+        window.location.href = "/login";
+    }, 3000);
+</script>
+
+</body>
+</html>

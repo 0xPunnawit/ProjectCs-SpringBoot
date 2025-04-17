@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeLeaf.org" th:fragment="Layout(content)">
+
+
+<head>
+    <meta charset="UTF-8" />
+    <title>0xPunnawit</title>
+
+    <!--    Bootstrap    -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+    <!--    FONT    -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+          integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--    Link CSS    -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!--    Link JS    -->
+    <script src="js/script.js" defer></script>
+
+
+</head>
+
+<body>
+
+
+<!-- Start Navbar -->
+<nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/"><i class="fa-solid fa-cart-shopping"></i> E-Commerce</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- ปุ่มสำหรับ Products -->
+                <li class="nav-item">
+                    <a class="nav-link active" href="/products-list"><i class="fa-solid fa-box"></i> Products</a>
+                </li>
+
+
+                <!-- ปุ่ม Top Up (แสดงเมื่อ Login สำเร็จ) -->
+                <li th:if="${userInfo != null and userInfo.username != 'admin01'}" class="nav-item">
+                    <a class="nav-link active" href="/top-up"><i class="fa-solid fa-wallet"></i> Top Up</a>
+                </li>
+
+            </ul>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <!-- หากยังไม่ได้ Login -->
+                <li th:if="${userInfo == null}" class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/login">
+                        <i class="fa-solid fa-right-to-bracket"></i> Login
+                    </a>
+                </li>
+                <li th:if="${userInfo == null}" class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/register">Register</a>
+                </li>
+
+                <!-- หาก Login สำเร็จ -->
+                <li th:if="${userInfo != null}" class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-user"></i>
+                        <span th:text="${userInfo.username}"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item text-danger" href="/logout">
+                                <i class="fa-solid fa-sign-out-alt me-2"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- แสดง Wallet (แสดงเฉพาะสมาชิกที่ไม่ใช่ admin) -->
+                <li th:if="${userInfo != null and userInfo.username != 'admin01'}" class="nav-item">
+                    <span class="nav-link text-white">
+                        <i class="fa-solid fa-sack-dollar"></i> <span th:text="${userInfo.wallet}"></span> Points
+                    </span>
+                </li>
+
+                <!-- ปุ่มสำหรับเช็ค Rented Programs (แสดงเมื่อ Login สำเร็จ) -->
+                <li th:if="${userInfo != null and userInfo.username != 'admin01'}" class="nav-item">
+                    <a class="nav-link btn btn-info btn-sm text-white" href="/rented-programs">
+                        <i class="fa-solid fa-briefcase" style="color: #ffffff;"></i> Check Rented Programs
+                    </a>
+                </li>
+
+                <!-- ปุ่ม Admin Panel (แสดงเฉพาะ admin) -->
+                <li th:if="${userInfo != null and userInfo.username == 'admin01'}" class="nav-item">
+                    <a class="nav-link btn btn-warning btn-sm text-white" href="/admin/">
+                        <i class="fa-solid fa-toolbox"></i> Admin Panel
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<!-- End Navbar -->
+
+
+<!--    Start Snow     -->
+<div class="snow-container">
+    <div class="snow foreground"></div>
+    <div class="snow foreground layered"></div>
+    <div class="snow middleground"></div>
+    <div class="snow middleground layered"></div>
+    <div class="snow background"></div>
+    <div class="snow background layered"></div>
+</div>
+<!--    End Snow     -->
+
+
+
+<div th:replace="${content}"></div>
+
+<!-- Start Footer -->
+<div class="container-fluid p-4 bg-primary text-center text-white">
+    <p class="mb-2">&copy; 2024 0xPunnawit. All Rights Reserved.</p>
+    <p class="mb-1">
+        <strong>Follow us on:</strong>
+        <a href="https://github.com/0xPunnawit" class="text-white text-decoration-underline"
+           target="_blank">GitHub</a>
+    </p>
+</div>
+<!-- End Footer -->
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+</script>
+
+
+
+</body>
+
+</html>

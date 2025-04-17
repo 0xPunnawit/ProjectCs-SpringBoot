@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Products</title>
+</head>
+
+<body>
+<section>
+    <div class="container-fluid p-4 mt-5">
+
+        <!-- 🔙 ปุ่มกลับ + ข้อความแจ้งเตือน + Dashboard -->
+        <div class="row mb-4">
+            <div class="col-md-3 text-start">
+                <button class="btn btn-secondary btn-lg w-20" onclick="history.back()">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </button>
+            </div>
+            <div class="col-md-6 text-center">
+                <div th:if="${successMessage}" class="alert alert-success text-center fw-bold">
+                    <p th:text="${successMessage}"></p>
+                </div>
+            </div>
+            <div class="col-md-3 text-end">
+                <a href="/admin/" class="btn btn-warning btn-lg w-20">
+                    <i class="fa-solid fa-home"></i> Dashboard
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- ฟอร์มเพิ่ม/แก้ไขสินค้า -->
+            <div class="col-md-3">
+                <div class="card shadow-lg">
+                    <div class="card-header text-center fs-4 bg-primary text-white">
+                        <span th:text="${productId != null} ? 'Edit Product' : 'Add Product'"></span>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${productId != null} ? '/admin/product/update' : '/admin/product/add'"
+                              method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="productId" th:value="${productId}">
+
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-bold">Product Name</label>
+                                <input type="text" name="name" id="name" class="form-control border-primary" maxlength="40" required th:value="${productName}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label fw-bold">Description</label>
+                                <input type="text" name="description" id="description" class="form-control border-primary" maxlength="40" required th:value="${productDescription}">
+                            </div>
+
+                            <!-- Category Dropdown -->
+                            <div class="mb-3">
+                                <label for="category" class="form-label fw-bold">Category</label>
+                                <select name="category" id="category" class="form-control border-primary" required>
+                                    <option value="">--Select Category--</option>
+                                    <option th:each="cat : ${categories}" th:value="${cat.categoryId}" th:text="${cat.categoryName}"
+                                            th:selected="${cat.categoryId == selectedCategory}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="status" class="form-label fw-bold">Status</label>
+                                <select name="status" id="status" class="form-control border-primary" required>
+                                    <option value="">--Select Status--</option>
+                                    <option value="OPEN_SALE" th:selected="${selectedStatus == 'OPEN_SALE'}">OPEN_SALE</option>
+                                    <option value="CLOSE_SALE" th:selected="${selectedStatus == 'CLOSE_SALE'}">CLOSE_SALE</option>
+                                    <option value="STOP_SALE" th:selected="${selectedStatus == 'STOP_SALE'}">STOP_SALE</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="price" class="form-label fw-bold">Enter Price</label>
+                                <input type="number" name="price" id="price" class="form-control border-primary" min="0" required th:value="${productPrice}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="youtubeUrl" class="form-label fw-bold">Review (YouTube URL)</label>
+                                <input type="url" name="youtubeUrl" id="youtubeUrl" class="form-control border-primary" required th:value="${productYoutubeUrl}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="rentalDays" class="form-label fw-bold">Rental Days</label>
+                                <input type="number" name="rentalDays" id="rentalDays" class="form-control border-primary" min="1" required th:value="${productRentalDays}">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="fileProgram" class="form-label fw-bold">Upload Program File</label>
+                                <input type="file" name="fileProgram" id="fileProgram" class="form-control border-primary" accept=".zip,.exe,.rar">
+                            </div>
+
+                            <button class="btn btn-primary w-100" th:text="${productId != null} ? 'Update Product' : 'Submit'"></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ตารางแสดงสินค้า -->
+            <div class="col-md-9">
+                <div class="card shadow-sm">
+                    <div class="card-header text-center bg-secondary text-white fs-5">
+                        Product List
+                    </div>
+                    <div class="card-body p-3">
+                        <table class="table table-bordered text-center">
+                            <thead class="table-dark">
+                            <tr>
+                                <th style="width: 5%;">ID</th> <!-- ✅ ลดขนาดคอลัมน์ ID -->
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="product : ${products}">
+                                <td class="small fw-bold text-muted" th:text="${product.productId}"></td> <!-- ✅ ID ตัวเล็ก -->
+                                <td class="fw-semibold" th:text="${product.name}"></td>
+                                <td th:text="${product.description}"></td>
+                                <td th:text="${product.category}"></td>
+                                <td th:text="${product.productsPrice}"></td>
+                                <td th:text="${product.status}"></td>
+                                <td>
+                                    <a th:href="@{/admin/product/edit/{id}(id=${product.productId})}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/admin/product/delete/{id}(id=${product.productId})}" class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Are you sure?');">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

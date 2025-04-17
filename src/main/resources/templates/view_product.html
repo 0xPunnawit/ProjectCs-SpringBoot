@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>รายละเอียดสินค้า</title>
+</head>
+
+<body>
+<section>
+    <br>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">รายละเอียดสินค้า</h1>
+        <div class="card shadow">
+            <div class="card-body row">
+                <div class="col-md-6">
+                    <h5 class="card-title">
+                        <strong>ชื่อสินค้า:</strong>
+                        <span th:text="${product.name}"></span>
+                    </h5>
+                    <p class="card-text">
+                        <strong>รายละเอียด:</strong>
+                        <span th:text="${product.description}"></span>
+                    </p>
+                    <p>
+                        <strong>ราคา:</strong>
+                        <span th:text="${product.productsPrice}"></span>
+                    </p>
+                    <p>
+                        <strong>สถานะ:</strong>
+                        <span th:switch="${#strings.trim(product.status)}">
+                            <span th:case="'OPEN_SALE'" class="badge bg-primary">OPEN_SALE</span>
+                            <span th:case="'CLOSE_SALE'" class="badge bg-warning">CLOSE_SALE</span>
+                            <span th:case="'STOP_SALE'" class="badge bg-danger">STOP_SALE</span>
+                            <span th:case="*" class="badge bg-secondary">Unknown</span>
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>วันที่ลงขายสินค้า:</strong>
+                        <span th:text="${formattedDate}"></span>
+                    </p>
+
+                    <p class="rental-days">
+                        <strong>ระยะเวลาเช่า: </strong><span th:text="${product.rentalDays} + ' วัน'"></span>
+                    </p>
+
+                    <!-- เงื่อนไขสำหรับสถานะสินค้า -->
+                    <form th:if="${userInfo != null and #strings.trim(product.status) == 'OPEN_SALE'}"
+                          th:action="@{/purchase}" method="POST"
+                          onsubmit="return confirm('คุณต้องการซื้อสินค้านี้หรือไม่?');">
+                        <input type="hidden" name="productId" th:value="${product.productId}">
+                        <input type="hidden" name="userId" th:value="${userInfo.userId}">
+                        <button type="submit" class="btn btn-success">ซื้อสินค้า</button>
+                    </form>
+
+                    <!-- ปุ่มแจ้งเตือนเมื่อสถานะไม่ใช่ OPEN_SALE -->
+                    <p th:if="${#strings.trim(product.status) != 'OPEN_SALE'}" class="text-danger">
+                        สินค้านี้ไม่สามารถซื้อได้
+                    </p>
+
+                </div>
+                <div class="col-md-6 text-center">
+                    <strong>ตัวอย่างสินค้า:</strong>
+                    <div th:if="${product.filePath != null and product.filePath != ''}">
+                        <iframe th:src="${product.filePath}" width="100%" height="315" frameborder="0"
+                                allowfullscreen></iframe>
+                    </div>
+                    <div th:if="${product.filePath == null or product.filePath == ''}">
+                        <p class="coming-soon">Coming Soon</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="/products-list" class="btn btn-secondary mt-4">กลับ</a>
+    </div>
+    <br>
+</section>
+</body>
+
+</html>

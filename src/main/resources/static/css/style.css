@@ -1,0 +1,214 @@
+html,
+body {
+    height: 100%;
+    /* ให้ body และ html มีความสูงเต็ม 100% */
+    margin: 0;
+    /* ลบขอบพื้นที่ว่าง */
+    display: flex;
+    flex-direction: column;
+    /* จัดเรียงให้เป็นแนวตั้ง */
+}
+
+.container-fluid {
+    margin-top: auto;
+    /* ดัน footer ไปอยู่ด้านล่าง */
+    position: relative;
+    /* ป้องกันไม่ให้ชนกับเนื้อหาอื่น */
+}
+
+/*  Start Snow */
+.snow-container {
+    position: fixed;
+    /* ตำแหน่ง fixed จะทำให้มันคงที่ */
+    bottom: 0;
+    /* ตำแหน่งที่อยู่ด้านล่างสุด */
+    left: 0;
+    /* เริ่มจากซ้ายสุด */
+    width: 100%;
+    /* ใช้ความกว้างเต็มหน้าจอ */
+    height: 200px;
+    /* ความสูงของ footer */
+    overflow: hidden;
+    z-index: 1;
+    /* ให้อยู่ด้านล่างสุด */
+    pointer-events: none;
+    /* ไม่ให้ผู้ใช้คลิกหรือโต้ตอบกับหิมะ */
+    background-color: transparent;
+    /* ให้พื้นหลังเป็นโปร่งใส */
+}
+
+.snow {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    /* เริ่มต้นที่ด้านบนสุดของ .snow-container */
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    transform: translate3d(0, -100%, 0);
+    -webkit-animation: snow linear infinite;
+    animation: snow linear infinite;
+}
+
+.snow.foreground {
+    background-image: url("https://dl6rt3mwcjzxg.cloudfront.net/assets/snow/snow-large-075d267ecbc42e3564c8ed43516dd557.png");
+    -webkit-animation-duration: 7s;
+    animation-duration: 7s;
+}
+
+.snow.middleground {
+    background-image: url("https://dl6rt3mwcjzxg.cloudfront.net/assets/snow/snow-medium-0b8a5e0732315b68e1f54185be7a1ad9.png");
+    -webkit-animation-duration: 15s;
+    animation-duration: 15s;
+}
+
+.snow.background {
+    background-image: url("https://dl6rt3mwcjzxg.cloudfront.net/assets/snow/snow-small-1ecd03b1fce08c24e064ff8c0a72c519.png");
+    -webkit-animation-duration: 10s;
+    animation-duration: 10s;
+}
+
+/* ปรับ keyframes */
+@-webkit-keyframes snow {
+    0% {
+        transform: translate3d(0, -100%, 0);
+    }
+
+    100% {
+        transform: translate3d(10%, 100%, 0);
+        /* ทำให้หิมะเคลื่อนที่ไปขวาน้อยลง */
+    }
+}
+
+@keyframes snow {
+    0% {
+        transform: translate3d(0, -100%, 0);
+    }
+
+    100% {
+        transform: translate3d(10%, 100%, 0);
+        /* ทำให้หิมะเคลื่อนที่ไปขวาน้อยลง */
+    }
+}
+
+/*  End Snow */
+
+
+/*  Start Slideshow */
+.carousel-indicators button {
+    background-color: #8fb0e0 !important;
+    border-radius: 50% !important;
+    /* ทำให้ปุ่มเป็นวงกลม */
+    width: 15px !important;
+    /* ขนาดปุ่ม */
+    height: 15px !important;
+    /* ขนาดปุ่ม */
+    opacity: 0.7 !important;
+    /* ความโปร่งใส */
+    transition: background-color 0.3s ease !important;
+    /* การเปลี่ยนสีเมื่อ hover */
+}
+
+/* เมื่อปุ่ม indicator ถูกเลือก (active) */
+.carousel-indicators .active {
+    background-color: #0D6EFD !important;
+}
+
+/* เปลี่ยนสีพื้นหลังของปุ่ม prev/next */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #000000 !important;
+    /* สีดำ */
+    border-radius: 50% !important;
+    /* ทำให้ปุ่มเป็นวงกลม */
+}
+
+/*  End Slideshow */
+
+.card {
+    border: none;
+    /* ไม่มีขอบการ์ด */
+    border-radius: 15px;
+    /* มุมของการ์ดจะโค้งมน */
+    overflow: hidden;
+    /* ซ่อนส่วนที่เกินขอบ */
+    position: relative;
+    /* เพิ่ม position เพื่อให้สามารถจัดการการซ้อนของ hover ได้ */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    /* การเปลี่ยนแปลงรูปทรงและเงาจะทำอย่างราบรื่นใน 0.3 วินาที */
+}
+
+/* เพิ่มแค่การขยายขนาดเฉพาะเมื่อเอาเมาส์ไปวางที่กรอบการ์ด */
+.product-card:hover {
+    transform: scale(1.05);
+    /* ขยายขนาดการ์ดเล็กน้อยเมื่อเอามาไว้เหนือการ์ด */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    /* เงาของการ์ดจะเข้มขึ้น */
+
+
+}
+
+.card-body {
+    background-color: #ffffff;
+    /* สีพื้นหลังของการ์ดเป็นสีขาว */
+    display: flex;
+    /* ใช้ flexbox สำหรับการจัดเรียงภายในการ์ด */
+    flex-direction: column;
+    /* การจัดเรียงองค์ประกอบภายในเป็นแนวตั้ง */
+    justify-content: space-between;
+    /* กระจายพื้นที่ว่างระหว่างองค์ประกอบในการ์ด */
+    height: 100%;
+    /* ความสูงของการ์ดเป็น 100% ของความสูงของคอนเทนเนอร์ */
+    padding: 20px;
+    /* การเว้นระยะภายในการ์ด */
+}
+
+
+body {
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+    .nav-item .dropdown-menu {
+        position: absolute;
+        top: 40px; /* ระดับความสูงให้ตรง */
+        left: 0px;
+        right: auto;
+    }
+
+
+
+/* QR Code Specific CSS */
+h1.qrcode-title {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+/* สามารถใช้เพื่อปรับแต่งหัวเรื่อง */
+
+.btn-qrcode {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+.btn-qrcode:hover {
+    background-color: #0056b3;
+}
+
+
+
+.rental-days {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+

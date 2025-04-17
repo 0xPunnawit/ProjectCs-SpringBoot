@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+</head>
+
+<body>
+<section>
+    <div class="container mt-5 p-5">
+        <div class="row">
+            <div class="col-md-6 p-5">
+                <img src="img/login/Login.png" width="90%" height="400px">
+            </div>
+            <div class="col-md-6 mt-3 p-3">
+                <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+                    <div class="card-header">
+                        <p class="fs-4 text-center">Login</p>
+                    </div>
+
+                    <!-- Display error message if exists -->
+                    <div th:if="${error}" class="alert alert-danger">
+                        <p th:text="${error}"></p>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Form ใช้ method="POST" สำหรับส่งข้อมูลแบบ POST -->
+                        <form action="/login" method="POST">
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input class="form-control" name="username" type="text"
+                                       th:value="${username}" required> <!-- คืนค่า username -->
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <div class="input-group">
+                                    <input class="form-control" id="password" name="password" type="password" th:value="${password}" required>
+                                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                        <i class="fa fa-eye-slash"></i> <!-- Icon แสดงตา -->
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn bg-primary text-white col-md-12">Login</button>
+                        </form>
+
+                    </div>
+                    <div class="card-footer text-center">
+                        Don't have an account? <a href="/register" class="text-decoration-none">
+                        Create Account
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+
+<body>
+
+<section>
+    <div class="container p-5">
+        <p class="text-center fs-2 mt-4">Admin Dashboard</p>
+        <div class="row justify-content-center p-2">
+
+            <!--    Add Product    -->
+            <div class="col-md-4 mt-2">
+                <a href="/admin/loadAddProduct" class="text-decoration-none">
+                    <div class="card card-sh">
+                        <div class="card-body text-center">
+                            <i class="fa-solid fa-circle-plus" style="color: #B197FC; font-size: 48px;"></i>
+                            <br>
+                            <h4>Manage Product</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!--    Add Category    -->
+            <div class="col-md-4 mt-2">
+                <a href="/admin/category" class="text-decoration-none">
+                    <div class="card card-sh">
+                        <div class="card-body text-center">
+                            <i class="fa-solid fa-book-atlas" style="color: #3acb57; font-size: 48px"></i>
+                            <h4>Manage Category</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+
+</html>

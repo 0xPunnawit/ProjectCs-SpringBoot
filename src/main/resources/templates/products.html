@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+
+</head>
+
+<body>
+
+<!-- โหลด JavaScript -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/static/js/search.js"></script>
+
+<section>
+
+  <div class="container-fluid bg-primary p-5 mt-5">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+
+        <!-- 🔍 ช่องค้นหา -->
+        <form id="searchForm" action="/products-list" method="GET">
+          <div class="input-group position-relative">
+            <input type="text" class="form-control" id="searchInput" name="query" placeholder="🔍 ค้นหาสินค้า..." autocomplete="off">
+            <button type="submit" class="btn btn-light text-dark ms-3 col-md-2" id="searchBtn">Search</button>
+          </div>
+          <!-- 🔥 แสดงผลลัพธ์ Auto-Suggest -->
+          <div id="suggestions" class="list-group position-absolute w-100 bg-white shadow-lg mt-1" style="z-index: 1000; display: none;"></div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+
+      <!-- เมนูด้านซ้าย -->
+      <!-- 🔥 ตัวกรองสถานะสินค้า -->
+      <div class="col-md-2">
+        <div class="list-group border rounded shadow-sm p-2">
+          <!-- หัวข้อสถานะสินค้า -->
+          <button type="button" class="list-group-item list-group-item-action bg-dark text-white active fw-bold text-center" aria-current="true">
+            สถานะสินค้า
+          </button>
+
+          <form action="/products-list" method="GET" class="mt-2">
+            <!-- ปุ่ม "ทั้งหมด" -->
+            <button type="submit" name="status" value="ALL" class="list-group-item list-group-item-action text-white bg-success fw-bold mb-2 rounded">
+              ALL
+            </button>
+
+            <!-- ปุ่ม "OPEN_SALE" -->
+            <button type="submit" name="status" value="OPEN_SALE" class="list-group-item list-group-item-action text-white bg-primary fw-bold mb-2 rounded">
+              OPEN_SALE
+            </button>
+
+            <!-- ปุ่ม "CLOSE_SALE" -->
+            <button type="submit" name="status" value="CLOSE_SALE" class="list-group-item list-group-item-action text-dark bg-warning fw-bold mb-2 rounded">
+              CLOSE_SALE
+            </button>
+
+            <!-- ปุ่ม "STOP_SALE" -->
+            <button type="submit" name="status" value="STOP_SALE" class="list-group-item list-group-item-action text-white bg-danger fw-bold mb-2 rounded">
+              STOP_SALE
+            </button>
+          </form>
+        </div>
+      </div>
+
+
+
+      <!-- คอนเทนต์ด้านขวา -->
+      <div class="col-md-10">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <p class="fs-3 text-center fw-bold">Products</p>
+
+            <!-- ส่วนสำหรับแสดงข้อความแจ้งเตือน -->
+            <div th:if="${successMessage}" class="alert alert-success text-center fw-bold mt-3" role="alert" th:text="${successMessage}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger text-center fw-bold mt-3" role="alert" th:text="${errorMessage}"></div>
+            <div th:if="${infoMessage}" class="alert alert-info text-center fw-bold mt-3" role="alert" th:text="${infoMessage}"></div>
+
+            <div class="row" id="productList">
+              <!-- Loop ผ่านรายการสินค้า -->
+              <div class="col-md-4 mb-3" th:each="product : ${products}">
+                <div class="card product-card">
+                  <div class="card-body">
+                    <h5 class="card-title">
+                      <strong>ชื่อสินค้า: </strong><span th:text="${product.name}"></span>
+                    </h5>
+                    <p class="card-text">
+                      <strong>ราคา: </strong><span th:text="${product.productsPrice}"></span>
+                    </p>
+
+                    <p>สถานะ:
+                      <span th:switch="${#strings.trim(product.status)}">
+                        <span th:case="'OPEN_SALE'" class="badge bg-primary">OPEN_SALE</span>
+                        <span th:case="'CLOSE_SALE'" class="badge bg-warning">CLOSE_SALE</span>
+                        <span th:case="'STOP_SALE'" class="badge bg-danger">STOP_SALE</span>
+                        <span th:case="*" class="badge bg-secondary">Unknown</span>
+                      </span>
+                    </p>
+
+
+                    <div class="d-flex justify-content-end gap-2 position-relative">
+                      <!-- ระยะเวลาเช่า -->
+                      <p class="rental-days">
+                        <strong>ระยะเวลาเช่า: </strong><span th:text="${product.rentalDays} + ' วัน'"></span>
+                      </p>
+
+                      <!-- ลิงก์สำหรับดูรายละเอียดสินค้า -->
+                      <a th:href="@{/view-product/{id}(id=${product.productId})}" class="btn btn-info">เพิ่มเติม</a>
+
+                      <!-- ปุ่มซื้อสินค้า -->
+                      <form th:if="${userInfo != null}" th:action="@{/purchase}" method="POST"
+                            onsubmit="return confirm('คุณต้องการซื้อสินค้านี้หรือไม่?');">
+                        <input type="hidden" name="productId" th:value="${product.productId}">
+                        <input type="hidden" name="userId" th:value="${userInfo.userId}">
+                        <button type="submit" class="btn btn-success"
+                                th:disabled="${#strings.trim(product.status) != 'OPEN_SALE'}">
+                          ซื้อสินค้า
+                        </button>
+                      </form>
+
+                      <!-- ข้อความแจ้งเตือนเมื่อผู้ใช้ไม่ได้ล็อกอิน -->
+                      <p th:if="${userInfo == null}" class="text-danger">ล็อกอินก่อนซื้อสินค้าได้</p>
+                    </div>
+
+
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+</section>
+
+
+</body>
+
+</html>

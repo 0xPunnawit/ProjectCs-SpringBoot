@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Product Rental Statistics</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+<section>
+    <div class="container-fluid p-5 mt-5">
+
+        <!-- 🔙 ปุ่มกลับ + Dashboard -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- ปุ่ม Back -->
+            <button class="btn btn-secondary btn-lg w-auto" onclick="history.back()">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+
+            <!-- 🔔 ข้อความแจ้งเตือนตรงกลาง -->
+            <div th:if="${successMessage}" class="alert alert-success text-center fw-bold w-50 mb-0">
+                <p th:text="${successMessage}" class="m-0"></p>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger text-center fw-bold w-50 mb-0">
+                <p th:text="${errorMessage}" class="m-0"></p>
+            </div>
+
+            <!-- ปุ่ม Dashboard -->
+            <a href="/admin/" class="btn btn-warning btn-lg w-auto">
+                <i class="fa-solid fa-home"></i> Dashboard
+            </a>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header text-center bg-primary text-white fs-4">
+                Product Rental Statistics
+            </div>
+            <div class="card-body p-4">
+                <table class="table table-bordered text-center">
+                    <thead class="table-dark">
+                    <tr>
+                        <th style="width: 5%;">ID</th>
+                        <th style="width: 60%;">Program name</th>
+                        <th style="width: 15%;" class="text-end">Number of tenants (Unique Users)</th>
+                        <th style="width: 15%;" class="text-end">Number of times rented</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="stat, iter : ${rentalStats}">
+                        <td class="small fw-bold text-muted" th:text="${iter.index + 1}"></td>
+                        <td class="fw-semibold text-start" th:text="${stat.productName}"></td>
+                        <td class="text-end" th:text="${stat.totalUsers}"></td>
+                        <td class="text-end" th:text="${stat.totalRentals}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+</body>
+</html>

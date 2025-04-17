@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: '404 Not Found',
+        text: 'ไม่พบหน้านี้ในระบบ กรุณาตรวจสอบ URL!',
+        timer: 3000, // ปิดอัตโนมัติหลัง 3 วินาที
+        confirmButtonText: 'ตกลง'
+    }).then(() => {
+        window.location.href = "/"; // เปลี่ยนไปหน้า Home หลังแจ้งเตือน
+    });
+</script>
+</body>
+</html>

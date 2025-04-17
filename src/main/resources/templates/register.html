@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+<section>
+    <div class="container mt-5 p-5">
+        <div class="row">
+            <div class="col-md-6 p-5">
+                <img src="img/login/Register.png" width="100%" height="400px">
+            </div>
+            <div class="col-md-6 mt-3 p-3">
+                <div class="card shadow p-3 mb-5 bg-body-tertiary rounded">
+                    <div class="card-header">
+                        <p class="fs-4 text-center">Register</p>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Display error message if exists -->
+                        <div th:if="${error}" class="alert alert-danger">
+                            <p th:text="${error}"></p>
+                        </div>
+
+                        <div class="card-body">
+                            <form action="/register" method="POST">
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label" for="fname">First Name</label>
+                                        <input class="form-control" name="fname" id="fname" type="text"
+                                               pattern="[A-Za-z]+" required
+                                               title="Only English letters are allowed (A-Z, a-z)" th:value="${fname}"
+                                               aria-label="First Name" aria-describedby="fnameHelp"
+                                               oninput="validateInputLength(this, 90); capitalizeFirstLetter(this);">
+                                    </div>
+
+                                    <div class="col">
+                                        <label class="form-label" for="lname">Last Name</label>
+                                        <input class="form-control" name="lname" id="lname" type="text"
+                                               pattern="[A-Za-z]+" required
+                                               title="Only English letters are allowed (A-Z, a-z)" th:value="${lname}"
+                                               aria-label="Last Name" aria-describedby="lnameHelp"
+                                               oninput="validateInputLength(this, 90); capitalizeFirstLetter(this);">
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="telnumber">Phone Number</label>
+                                    <input class="form-control" name="telnumber" id="telnumber" type="tel"
+                                           pattern="^[0-9]{10}$" maxlength="10" required
+                                           title="Phone number must be exactly 10 digits and contain only numbers"
+                                           th:value="${telnumber}" aria-label="Phone Number"
+                                           aria-describedby="telHelp">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input class="form-control" name="email" id="email" type="email"
+                                           th:value="${email}" maxlength="85" required aria-label="Email"
+                                           aria-describedby="emailHelp" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                                           title="Please enter a valid email address with a maximum of 90 characters">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label" for="username">Username</label>
+                                    <input class="form-control" name="username" id="username" type="text"
+                                           pattern="[A-Za-z0-9._-]{3,20}" required th:value="${username}"
+                                           title="Username must be 3-20 characters long" aria-label="Username"
+                                           aria-describedby="usernameHelp">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label" for="password">Password</label>
+                                        <div class="input-group">
+                                            <input class="form-control" id="password" name="password"
+                                                   type="password" required aria-label="Password"
+                                                   aria-describedby="passwordHelp" th:value="${password}">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                    id="togglePassword">
+                                                <i class="fa fa-eye-slash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <label class="form-label" for="cpassword">Confirm Password</label>
+                                        <input class="form-control" name="cpassword" id="cpassword" type="password"
+                                               required aria-label="Confirm Password" aria-describedby="cpasswordHelp"
+                                               th:value="${cpassword}">
+                                    </div>
+                                </div>
+                                <br>
+
+                                <button type="submit" class="btn bg-primary text-white col-md-12"
+                                        aria-label="Register Button">Register</button>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center">
+                            Have an account ? <a href="/login" class="text-decoration-none">Login</a>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</body>
+
+</html>

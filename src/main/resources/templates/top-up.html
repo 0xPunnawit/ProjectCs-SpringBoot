@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base::Layout(~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Top-Up</title>
+</head>
+
+<body>
+<section>
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+        <div class="card shadow-lg" style="max-width: 800px;">
+            <div class="row g-0">
+                <!-- ส่วนของ QR Code -->
+                <div class="col-md-6 d-flex justify-content-center align-items-center bg-primary text-white p-4">
+                    <div class="text-center">
+                        <h3 class="mb-4">สแกน QR Code เติมเงิน</h3>
+                        <img id="qrcode" src="img/qrcodeme/<your_img>.jpg" alt="QR Code" class="img-fluid rounded">
+                        <p class="mt-3">โปรดสแกน QR Code เพื่อชำระเงินผ่าน PromptPay</p>
+                        <a id="downloadQrCode" href="img/qrcodeme/DemoQr.png" download="QrCodePromptPay.jpg" class="btn btn-light mt-3">
+                            บันทึก QR Code ของฉัน
+                        </a>
+                    </div>
+                </div>
+                <!-- ส่วนของฟอร์มอัปโหลด -->
+                <div class="col-md-6 p-4">
+                    <h4 class="card-title">อัปโหลดสลิปการชำระเงิน</h4>
+
+                    <form th:action="@{/verify-slip}" method="POST" enctype="multipart/form-data" onsubmit="return validateFileInput();">
+                        <div class="mb-3">
+                            <label for="slipUpload" class="form-label">เลือกไฟล์ภาพสลิป:</label>
+                            <input type="file" id="slipUpload" name="file" accept="image/jpeg,image/png" class="form-control" required>
+                            <small class="text-muted">ขนาดไฟล์ต้องไม่เกิน 3MB และเป็นรูปภาพ JPEG หรือ PNG</small>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">เติมเงิน</button>
+                        </div>
+                    </form>
+
+                    <div class="mt-3">
+                        <a href="/products-list" class="btn btn-secondary w-100">กลับไปหน้าสินค้า</a>
+                    </div>
+                    <br><br><br>
+                    <!-- แสดงข้อความแจ้งเตือน -->
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
