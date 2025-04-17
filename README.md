@@ -74,3 +74,7 @@ git clone https://github.com/0xPunnawit/ProjectCs-SpringBoot.git
 
 เปิดเว็บผ่านเบราว์เซอร์
 http://localhost:8080
+
+# Account users ชื่อผู้ใช้กับแอดมินเหมือนกัน 
+person -> username: AA1 password: AA1
+admin -> username: admin01  password: admin01
