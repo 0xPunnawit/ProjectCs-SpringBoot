@@ -58,13 +58,15 @@ git clone https://github.com/0xPunnawit/ProjectCs-SpringBoot.git
 
 🛑 สำคัญมาก: หากวางไว้ที่ path อื่น เช่น Desktop, C:\ หรือโฟลเดอร์ชื่ออื่น อาจทำให้ระบบอัปโหลดไฟล์โปรแกรมทำงานผิดพลาด
 
+# Database
 และไปที่ src/main/resources/application.properties ให้ใส่ ชื่อ database และ รหัสผ่านของคุณ
-spring.datasource.username=your_mysql_username
-spring.datasource.password=your_mysql_password 
+- spring.datasource.username=your_mysql_username
+- spring.datasource.password=your_mysql_password 
 
+# SlipOK API
 และใส่ api ของ slip ok ของคุณ
-slipok.api.url=https://your-slipok-api.com
-slipok.api.key=your_api_key
+- slipok.api.url=https://your-slipok-api.com
+- slipok.api.key=your_api_key
 
 รันโปรเจกต์ผ่าน IntelliJ IDEA
 เปิดไฟล์ TutorialsEomApplication.java
